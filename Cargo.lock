@@ -3038,7 +3038,6 @@ dependencies = [
  "once_cell",
  "primitive-types",
  "rand 0.7.3",
- "secp256k1",
  "serde",
  "serde_json",
  "sha2 0.10.2",
