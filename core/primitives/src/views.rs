@@ -16,7 +16,6 @@ use num_rational::Rational;
 use serde::{Deserialize, Serialize};
 
 use near_crypto::{PublicKey, Signature};
-use near_o11y::pretty;
 use strum::IntoEnumIterator;
 
 use crate::account::{AccessKey, AccessKeyPermission, Account, FunctionCallPermission};
@@ -1184,7 +1183,7 @@ impl fmt::Debug for FinalExecutionStatus {
             FinalExecutionStatus::Started => f.write_str("Started"),
             FinalExecutionStatus::Failure(e) => f.write_fmt(format_args!("Failure({:?})", e)),
             FinalExecutionStatus::SuccessValue(v) => {
-                f.write_fmt(format_args!("SuccessValue({})", pretty::AbbrBytes(v)))
+                f.write_fmt(format_args!("SuccessValue({:?})", v))
             }
         }
     }
@@ -1222,7 +1221,7 @@ impl fmt::Debug for ExecutionStatusView {
             ExecutionStatusView::Unknown => f.write_str("Unknown"),
             ExecutionStatusView::Failure(e) => f.write_fmt(format_args!("Failure({:?})", e)),
             ExecutionStatusView::SuccessValue(v) => {
-                f.write_fmt(format_args!("SuccessValue({})", pretty::AbbrBytes(v)))
+                f.write_fmt(format_args!("SuccessValue({:?})", v))
             }
             ExecutionStatusView::SuccessReceiptId(receipt_id) => {
                 f.write_fmt(format_args!("SuccessReceiptId({})", receipt_id))
@@ -1498,7 +1497,7 @@ impl fmt::Debug for FinalExecutionOutcomeView {
             .field("status", &self.status)
             .field("transaction", &self.transaction)
             .field("transaction_outcome", &self.transaction_outcome)
-            .field("receipts_outcome", &pretty::Slice(&self.receipts_outcome))
+            // .field("receipts_outcome", &pretty::Slice(&self.receipts_outcome))
             .finish()
     }
 }

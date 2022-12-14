@@ -6,7 +6,6 @@ use borsh::{BorshDeserialize, BorshSerialize};
 use serde::{Deserialize, Serialize};
 
 use near_crypto::{PublicKey, Signature};
-use near_o11y::pretty;
 use near_primitives_core::profile::{ProfileDataV2, ProfileDataV3};
 
 use crate::account::AccessKey;
@@ -113,7 +112,7 @@ impl From<DeployContractAction> for Action {
 impl fmt::Debug for DeployContractAction {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.debug_struct("DeployContractAction")
-            .field("code", &format_args!("{}", pretty::AbbrBytes(&self.code)))
+            .field("code", &format_args!("{:?}",&self.code))
             .finish()
     }
 }
@@ -138,7 +137,7 @@ impl fmt::Debug for FunctionCallAction {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.debug_struct("FunctionCallAction")
             .field("method_name", &format_args!("{}", &self.method_name))
-            .field("args", &format_args!("{}", pretty::AbbrBytes(&self.args)))
+            .field("args", &format_args!("{:?}", &self.args))
             .field("gas", &format_args!("{}", &self.gas))
             .field("deposit", &format_args!("{}", &self.deposit))
             .finish()
@@ -282,7 +281,7 @@ impl fmt::Debug for ExecutionStatus {
             ExecutionStatus::Unknown => f.write_str("Unknown"),
             ExecutionStatus::Failure(e) => f.write_fmt(format_args!("Failure({})", e)),
             ExecutionStatus::SuccessValue(v) => {
-                f.write_fmt(format_args!("SuccessValue({})", pretty::AbbrBytes(v)))
+                f.write_fmt(format_args!("SuccessValue({:?})", v))
             }
             ExecutionStatus::SuccessReceiptId(receipt_id) => {
                 f.write_fmt(format_args!("SuccessReceiptId({})", receipt_id))
@@ -383,8 +382,8 @@ impl Default for ExecutionMetadata {
 impl fmt::Debug for ExecutionOutcome {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.debug_struct("ExecutionOutcome")
-            .field("logs", &pretty::Slice(&self.logs))
-            .field("receipt_ids", &pretty::Slice(&self.receipt_ids))
+            // .field("logs", &pretty::Slice(&self.logs))
+            // .field("receipt_ids", &pretty::Slice(&self.receipt_ids))
             .field("burnt_gas", &self.gas_burnt)
             .field("tokens_burnt", &self.tokens_burnt)
             .field("status", &self.status)

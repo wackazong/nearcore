@@ -5,7 +5,6 @@ use borsh::{BorshDeserialize, BorshSerialize};
 use serde::{Deserialize, Serialize};
 
 use near_crypto::{KeyType, PublicKey};
-use near_o11y::pretty;
 
 use crate::borsh::maybestd::collections::HashMap;
 use crate::hash::CryptoHash;
@@ -130,7 +129,7 @@ impl fmt::Debug for DataReceipt {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.debug_struct("DataReceipt")
             .field("data_id", &self.data_id)
-            .field("data", &format_args!("{}", pretty::AbbrBytes(self.data.as_deref())))
+            .field("data", &format_args!("{:?}", self.data.as_deref()))
             .finish()
     }
 }
@@ -157,7 +156,7 @@ pub struct ReceivedData {
 impl fmt::Debug for ReceivedData {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.debug_struct("ReceivedData")
-            .field("data", &format_args!("{}", pretty::AbbrBytes(self.data.as_deref())))
+            .field("data", &format_args!("{:?}", self.data.as_deref()))
             .finish()
     }
 }
