@@ -3,7 +3,6 @@
 
 use std::collections::HashMap;
 
-use crate::types::StatusError;
 use chrono::DateTime;
 use near_primitives::types::EpochId;
 use near_primitives::views::{

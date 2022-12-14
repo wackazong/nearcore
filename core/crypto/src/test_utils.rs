@@ -20,7 +20,6 @@ impl PublicKey {
                 let keypair = ed25519_key_pair_from_seed(seed);
                 PublicKey::ED25519(ED25519PublicKey(keypair.public.to_bytes()))
             }
-            _ => unimplemented!(),
         }
     }
 }
@@ -45,7 +44,6 @@ impl Signature {
             KeyType::ED25519 => {
                 Signature::ED25519(ed25519_dalek::Signature::from_bytes(&SIG).unwrap())
             }
-            _ => unimplemented!(),
         }
     }
 }
