@@ -4,7 +4,6 @@
 use std::collections::HashMap;
 
 use crate::types::StatusError;
-use actix::Message;
 use chrono::DateTime;
 use near_primitives::types::EpochId;
 use near_primitives::views::{
@@ -188,10 +187,6 @@ pub enum DebugStatus {
     ChainProcessingStatus,
     // The state parts already requested.
     RequestedStateParts,
-}
-
-impl Message for DebugStatus {
-    type Result = Result<DebugStatusResponse, StatusError>;
 }
 
 #[derive(Serialize, Debug)]

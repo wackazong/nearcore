@@ -3,7 +3,6 @@ use std::collections::HashMap;
 use std::sync::atomic::{AtomicBool, AtomicU64, Ordering};
 use std::sync::Arc;
 
-use actix::Message;
 use chrono::DateTime;
 use near_primitives::time::Utc;
 
@@ -48,7 +47,7 @@ pub enum AccountOrPeerIdOrHash {
     Hash(CryptoHash),
 }
 
-#[derive(Debug, Serialize)]
+#[derive(Debug)]
 pub struct DownloadStatus {
     pub start_time: DateTime<Utc>,
     pub prev_update_time: DateTime<Utc>,
@@ -280,10 +279,6 @@ impl GetBlock {
     }
 }
 
-impl Message for GetBlock {
-    type Result = Result<BlockView, GetBlockError>;
-}
-
 /// Get block with the block merkle tree. Used for testing
 pub struct GetBlockWithMerkleTree(pub BlockReference);
 
@@ -293,19 +288,11 @@ impl GetBlockWithMerkleTree {
     }
 }
 
-impl Message for GetBlockWithMerkleTree {
-    type Result = Result<(BlockView, Arc<PartialMerkleTree>), GetBlockError>;
-}
-
 /// Actor message requesting a chunk by chunk hash and block hash + shard id.
 pub enum GetChunk {
     Height(BlockHeight, ShardId),
     BlockHash(CryptoHash, ShardId),
     ChunkHash(ChunkHash),
-}
-
-impl Message for GetChunk {
-    type Result = Result<ChunkView, GetChunkError>;
 }
 
 #[derive(thiserror::Error, Debug)]
@@ -357,10 +344,6 @@ impl Query {
     pub fn new(block_reference: BlockReference, request: QueryRequest) -> Self {
         Query { block_reference, request }
     }
-}
-
-impl Message for Query {
-    type Result = Result<QueryResponse, QueryError>;
 }
 
 #[derive(thiserror::Error, Debug)]
@@ -470,10 +453,6 @@ impl From<near_chain_primitives::error::Error> for StatusError {
     }
 }
 
-impl Message for Status {
-    type Result = Result<StatusResponse, StatusError>;
-}
-
 pub struct GetNextLightClientBlock {
     pub last_block_hash: CryptoHash,
 }
@@ -511,22 +490,10 @@ impl From<near_chain_primitives::error::Error> for GetNextLightClientBlockError 
     }
 }
 
-impl Message for GetNextLightClientBlock {
-    type Result = Result<Option<Arc<LightClientBlockView>>, GetNextLightClientBlockError>;
-}
-
 pub struct GetNetworkInfo {}
-
-impl Message for GetNetworkInfo {
-    type Result = Result<NetworkInfoResponse, String>;
-}
 
 pub struct GetGasPrice {
     pub block_id: MaybeBlockId,
-}
-
-impl Message for GetGasPrice {
-    type Result = Result<GasPriceView, GetGasPriceError>;
 }
 
 #[derive(thiserror::Error, Debug)]
@@ -604,16 +571,8 @@ impl From<near_chain_primitives::Error> for TxStatusError {
     }
 }
 
-impl Message for TxStatus {
-    type Result = Result<Option<FinalExecutionOutcomeViewEnum>, TxStatusError>;
-}
-
 pub struct GetValidatorInfo {
     pub epoch_reference: EpochReference,
-}
-
-impl Message for GetValidatorInfo {
-    type Result = Result<EpochValidatorInfo, GetValidatorInfoError>;
 }
 
 #[derive(thiserror::Error, Debug)]
@@ -645,10 +604,6 @@ impl From<near_chain_primitives::Error> for GetValidatorInfoError {
 
 pub struct GetValidatorOrdered {
     pub block_id: MaybeBlockId,
-}
-
-impl Message for GetValidatorOrdered {
-    type Result = Result<Vec<ValidatorStakeView>, GetValidatorInfoError>;
 }
 
 pub struct GetStateChanges {
@@ -686,33 +641,17 @@ impl From<near_chain_primitives::Error> for GetStateChangesError {
     }
 }
 
-impl Message for GetStateChanges {
-    type Result = Result<StateChangesView, GetStateChangesError>;
-}
-
 pub struct GetStateChangesInBlock {
     pub block_hash: CryptoHash,
-}
-
-impl Message for GetStateChangesInBlock {
-    type Result = Result<StateChangesKindsView, GetStateChangesError>;
 }
 
 pub struct GetStateChangesWithCauseInBlock {
     pub block_hash: CryptoHash,
 }
 
-impl Message for GetStateChangesWithCauseInBlock {
-    type Result = Result<StateChangesView, GetStateChangesError>;
-}
-
 pub struct GetStateChangesWithCauseInBlockForTrackedShards {
     pub block_hash: CryptoHash,
     pub epoch_id: EpochId,
-}
-
-impl Message for GetStateChangesWithCauseInBlockForTrackedShards {
-    type Result = Result<HashMap<ShardId, StateChangesView>, GetStateChangesError>;
 }
 
 pub struct GetExecutionOutcome {
@@ -777,16 +716,8 @@ pub struct GetExecutionOutcomeResponse {
     pub outcome_root_proof: MerklePath,
 }
 
-impl Message for GetExecutionOutcome {
-    type Result = Result<GetExecutionOutcomeResponse, GetExecutionOutcomeError>;
-}
-
 pub struct GetExecutionOutcomesForBlock {
     pub block_hash: CryptoHash,
-}
-
-impl Message for GetExecutionOutcomesForBlock {
-    type Result = Result<HashMap<ShardId, Vec<ExecutionOutcomeWithIdView>>, String>;
 }
 
 pub struct GetBlockProof {
@@ -827,10 +758,6 @@ impl From<near_chain_primitives::error::Error> for GetBlockProofError {
     }
 }
 
-impl Message for GetBlockProof {
-    type Result = Result<GetBlockProofResponse, GetBlockProofError>;
-}
-
 pub struct GetReceipt {
     pub receipt_id: CryptoHash,
 }
@@ -858,15 +785,7 @@ impl From<near_chain_primitives::Error> for GetReceiptError {
     }
 }
 
-impl Message for GetReceipt {
-    type Result = Result<Option<ReceiptView>, GetReceiptError>;
-}
-
 pub struct GetProtocolConfig(pub BlockReference);
-
-impl Message for GetProtocolConfig {
-    type Result = Result<ProtocolConfigView, GetProtocolConfigError>;
-}
 
 #[derive(thiserror::Error, Debug)]
 pub enum GetProtocolConfigError {
@@ -894,10 +813,6 @@ impl From<near_chain_primitives::Error> for GetProtocolConfigError {
 
 pub struct GetMaintenanceWindows {
     pub account_id: AccountId,
-}
-
-impl Message for GetMaintenanceWindows {
-    type Result = Result<MaintenanceWindowsView, GetMaintenanceWindowsError>;
 }
 
 #[derive(thiserror::Error, Debug)]

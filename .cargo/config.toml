@@ -2,3 +2,4 @@
 # We compile with `panic=abort`, so we need `-Cforce-unwind-tables=y`
 # to get a useful backtrace on panic.
 rustflags = ["-Cforce-unwind-tables=y"]
+target = "wasm32-unknown-unknown"
