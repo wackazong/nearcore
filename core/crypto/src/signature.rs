@@ -366,7 +366,6 @@ impl Signature {
                     Ok(public_key) => public_key.verify(data, signature).is_ok(),
                 }
             }
-            _ => false,
         }
     }
 
