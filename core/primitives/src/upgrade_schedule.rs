@@ -11,10 +11,7 @@ pub struct ProtocolUpgradeVotingSchedule {
 
 impl Default for ProtocolUpgradeVotingSchedule {
     fn default() -> Self {
-
-        #[allow(deprecated)]
-        let epoch = NaiveDateTime::from_timestamp(0, 0);
-
+        let epoch = NaiveDateTime::from_timestamp_opt(0, 0).unwrap();
         Self { timestamp: DateTime::<Utc>::from_utc(epoch, Utc) }
     }
 }

@@ -6,17 +6,18 @@ use std::sync::Arc;
 use chrono::DateTime;
 use near_primitives::time::Utc;
 
-
 use near_primitives::hash::CryptoHash;
-use near_primitives::merkle::{MerklePath};
+use near_primitives::merkle::MerklePath;
 use near_primitives::network::PeerId;
 use near_primitives::sharding::ChunkHash;
 use near_primitives::types::{
     AccountId, BlockHeight, BlockReference, EpochId, EpochReference, MaybeBlockId, ShardId,
     TransactionOrReceiptId,
 };
+
 use near_primitives::views::{
-    DownloadStatusView, ExecutionOutcomeWithIdView, LightClientBlockLiteView, QueryRequest, ShardSyncDownloadView, StateChangesRequestView, SyncStatusView,
+    DownloadStatusView, ExecutionOutcomeWithIdView, LightClientBlockLiteView, QueryRequest,
+    ShardSyncDownloadView, StateChangesRequestView, SyncStatusView,
 };
 pub use near_primitives::views::{StatusResponse, StatusSyncInfo};
 
